@@ -45,7 +45,7 @@
             <button onclick="openSearchBox()"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <header>
-            <div id="title"><h1><i class="fa-solid fa-film"></i>Movie List</h1></div>
+            <div id="title"><h1><i class="fa-solid fa-film"></i> Movie List</h1></div>
             <div class="category">
                 <button>액션</button>
                 <button>모험</button>
@@ -70,32 +70,24 @@
         </header>
         <section>
             <div id="movie-list">
-                <div class="col-4" id="current-movie">
-                    <p style="padding:0.5em;"><i class="fa-solid fa-video"></i> 현재 상영중</p>
+                <div class="col-5" id="current-movie">
+                    <p style="padding:0.5em; color:white;"><i class="fa-solid fa-video"></i> 현재 상영중</p>
                     <div class="current-poster">
-                        
+                        <button id="left"><</button>
+                        <button id="right">></button>
+                        <div id="current-poster-list">
+
+                        </div>
                     </div>
                 </div>
-                <div class="col-8" id="Types-of-movies">
-                    <p class="genre_text" style="padding:0.5em;">Best 영화</p>
+                <div class="col-7" id="Types-of-movies">
+                    <p class="genre_text" style="padding:0.5em; color:white;">Best 영화</p>
                     <div id="movie-item">
                         
                     </div>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </nav>
                 </div>
