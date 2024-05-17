@@ -16,8 +16,74 @@ let totalResults = 0//총 results
 let page = 1 // 현재페이지
 let pageSize = 6 //한페이지에 보여 줄 results
 let groupSize = 3 // pagination을 몇 개씩 보여 줄 것 인지
+let currentPosterList = document.querySelector('#current-poster-list')
+let current_button = document.querySelectorAll('.current-poster button')
+console.log('current_button', current_button)
+let flag = true
+let current_moving_button = -1; // left right 버튼
+let moving = document.querySelector('.current-poster').clientWidth
 
+current_button.forEach(x => x.addEventListener('click', (event) => moving_poster(event.target.textContent)))
 category_button.forEach(x => x.addEventListener('click', (event) => categoryMethod(event.target.textContent)))
+
+let automatic_poster = setInterval(() => {Interval()}, 5000)
+
+window.addEventListener('resize', function(){
+    moving = document.querySelector('.current-poster').clientWidth;
+    currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+    currentPosterList.style.transition = '0s'
+    document.querySelector('.img_poster').style.width = moving + 'px'
+})
+
+function Interval(){
+    currentPosterList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
+    moving = document.querySelector('.current-poster').clientWidth
+    current_moving_button--;
+    currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+    if(current_moving_button === -21){
+        currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+        current_moving_button = -1
+        setTimeout(()=>{
+            currentPosterList.style.transition = 'none'
+            currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+        }, 500)
+    }
+}
+
+const moving_poster = (event) => {
+    moving = document.querySelector('.current-poster').clientWidth
+    if(!flag) return
+    flag = false;
+    clearInterval(automatic_poster)
+    setTimeout(() => {
+        flag = true
+        automatic_poster = setInterval(()=>{Interval()}, 5000)
+    }, 1000)
+    currentPosterList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
+    if(event == '>'){
+        current_moving_button--;
+        currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+        if(current_moving_button === -21){
+            currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+            current_moving_button = -1
+            setTimeout(()=>{
+                currentPosterList.style.transition = 'none'
+                currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+            }, 1000)
+        }
+    }else if (event == '<') {
+        current_moving_button++;
+        currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+        if(current_moving_button === 0){
+            currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+            current_moving_button = -20
+            setTimeout(()=>{
+                currentPosterList.style.transition = 'none'
+                currentPosterList.style.transform = `translateX(${current_moving_button * moving}px)`
+            }, 1000)
+        }
+    }
+}
 
 const closeSubBox = () => {
     document.querySelector('.mobile-menu-list').style.width = 0
@@ -118,11 +184,38 @@ const posterMethod = (poster) => {
     return `https://image.tmdb.org/t/p/w500` + poster
 }
 
+//현재 상영 영화
+const current_poster = async () => {
+    let current_url = new URL(`https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&api_key=${API_KEY}`)
+    let currentMovies = ''
+    try{
+        let current_response = await fetch(current_url)
+        console.log('current_response', current_response)
+        let current_data = await current_response.json()
+        console.log('current_data', current_data)
+        let current_dataList = current_data.results
+        console.log('current_dataList', current_dataList)
+        if(current_response.status === 200){
+            //이제 여기서 현재 영화들이 왼쪽으로 넘어가는 것 처럼 보이게 만들어야 함
+            currentMovies += 
+            `<img src=${posterMethod(current_dataList[current_dataList.length - 1].poster_path)} class="img_poster">`
+            current_dataList.map(x => 
+                currentMovies += `<img src=${posterMethod(x.poster_path)} class="img_poster">`
+            )
+            currentMovies += 
+            `<img src=${posterMethod(current_dataList[0].poster_path)} class="img_poster">`
+            document.querySelector('#current-poster-list').innerHTML = currentMovies
+        }else{
+            throw new Error(current_data.message)
+        }
+    }catch(error){
+        console.log('error', error.message)
+    }
+}
+
 const render = () => {
-    let currentMovies = '<img src=${posterMethod}>'
 
-    document.querySelector('.current-poster').innerHTML = currentMovies
-
+    //movie list item
     let itemHTML = ''
     let start = (page - 1) * 6
     console.log('start', start)
@@ -130,7 +223,7 @@ const render = () => {
         itemHTML += 
         `<div class="col-4 item">
             <img src=${posterMethod(dataList[i].poster_path)}>
-            <p>${dataList[i].title}</p>
+            <p style="color:white">${dataList[i].title}</p>
         </div>`
     }
     document.querySelector('#movie-item').innerHTML = itemHTML
@@ -156,10 +249,11 @@ const NoRepeat = async () => {
     }
 }
 
-const firstMethod = () => {
+const MovieList = () => {
     //url = new URL(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=ko-KR&page=1`)
     url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc?&api_key=${API_KEY}`)
     NoRepeat()
 }
 
-firstMethod()
+MovieList()
+current_poster()
