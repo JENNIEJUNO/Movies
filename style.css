@@ -1,3 +1,6 @@
+body{
+    background-color:black;
+}
 *{
     margin:0px;
     padding:0px;
@@ -14,7 +17,7 @@ button{
     cursor:pointer;
 }
 .container{
-    max-width:960px;
+    max-width:80vw;
 }
 img{
     width:100%;
@@ -42,15 +45,24 @@ img{
     padding:1em;
 }
 #title{
+    margin:1em;
     width:100%;
-    background-color:red;
     text-align:center;
+    color:rgb(168, 7, 7);
 }
 .category{
     width:100%;
     display:flex;
     justify-content:space-between;
     flex-wrap:wrap;
+    padding:1.5em;
+    border-bottom: 3px white double;
+}
+.category button{
+    color:white;
+}
+.category button:hover{
+    color:rgb(168, 7, 7);
 }
 #movie-list{
     display:flex;
@@ -59,16 +71,51 @@ img{
     display:flex;
     flex-direction:column;
     align-items:center;
-    background-color:red;
+}
+#current-movie img{
+    padding:1em;
+    box-sizing:border-box;
 }
 .current-poster{
-    width:100%;
+    height:100%;
+    width:30vw;
+    overflow:hidden;
+    position: relative;
+}
+#left{
+    position:absolute;
+    left:0;
+    height:100%;
+    color:white;
+    display:flex;
+    align-items:center;
+    font-size:3vw;
+    z-index:1;
+}
+#right{
+    right:0;
+    height:100%;
+    color:white;
+    position:absolute;
+    display:flex;
+    align-items:center;
+    font-size:3vw;
+    z-index:1;
+}
+#current-poster-list{
+    width:660vw;
+    display:flex;
+    height:100%;
+    transition:1s;
+    transform:translateX(-30vw);
+}
+.img_poster{
+    width:30vw;
 }
 #Types-of-movies{
     display:flex;
     flex-direction:column;
     align-items:center;
-    background-color:blue;
 }
 #movie-item{
     display:flex;
@@ -90,7 +137,7 @@ img{
     justify-content:center;
     align-items:center;
     position:fixed;
-    margin:auto auto;
+    margin:auto;
     top:0;
     bottom:0;
     left:0;
@@ -108,12 +155,30 @@ img{
     right:0;
     padding:1em;
 }
+.pagination li>a{
+    background:none;
+    border:0;
+    color:white;
+}
+.pagination li>a:hover{
+    color:rgb(168, 7, 7);
+}
 @media (max-width:1000px){
     #movie-list{
         flex-direction:column;
     }
     #current-movie{
         width:100%;
+    }
+    .current-poster{
+        width:60vw;
+    }
+    #current-poster-list{
+        width:1320vw;
+        transform:translateX(-60vw);
+    }
+    .img_poster{
+        width:60vw;
     }
     #Types-of-movies{
         width:100%;
