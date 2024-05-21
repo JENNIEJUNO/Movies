@@ -158,7 +158,7 @@ button{
     color:rgb(168, 7, 7);
 }
 #search-box{
-    display:flex;
+    display:none;
     justify-content:center;
     align-items:center;
     position:fixed;
@@ -169,8 +169,9 @@ button{
     right:0;
     width:70vw;
     height:40vw;
-    background-color:gray;
+    background-color:rgb(24, 24, 24);
     opacity:0.9;
+    z-index:1;
 }
 #search-close{
     position:absolute;
@@ -203,7 +204,37 @@ button{
 }
 #click_keyword{
     font-size:2vw;
+    color:white;
     cursor:pointer;
+}
+#miniButton{
+    display:none;
+}
+#subBox{
+    width:50vw;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    position:fixed;
+    left:-50vw;
+    top:0;
+    background-color:rgb(24, 24, 24);
+    z-index:1;
+}
+#subBox>button{
+    cursor:pointer;
+    font-size:2vw;
+    padding:1vw;
+    color:white;
+}
+#subBox>button:hover{
+    color:rgb(168, 7, 7);
+}
+#subBox>span>button{
+    width:100%;
+    font-size:2vw;
+    text-align:end;
+    padding:1.9vw;
 }
 @media (max-width:1000px){
     #title{
@@ -263,6 +294,19 @@ button{
     #pagination button{
         font-size:2vw;
         padding:1vw;
+    }
+    #miniButton{
+        display:block;
+    }
+    #miniButton button{
+        font-size:2.5vw;
+        color:white;
+        margin:2vw 1vw;
+        cursor: pointer;
+    }
+    .sub-close-button{
+        color:white;
+        cursor:pointer;
     }
 }
 @media (max-width:500px){
