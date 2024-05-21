@@ -6,6 +6,7 @@ let page = 1 // 현재페이지
 let pageSize = 6 //한페이지에 보여 줄 results
 let groupSize = 3
 let category_button = document.querySelectorAll('#category-menus > button')
+let subCategoryButton = document.querySelectorAll("#subBox > button")
 let flag = true
 let current_moving_count = -1; // left right 버튼
 let currentBox = document.querySelector('#current-movie')
@@ -16,6 +17,7 @@ let leftRight = document.querySelectorAll('#current-movie button')
 
 leftRight.forEach(x => x.addEventListener('click', (event) => moving_poster(event.target.id)))
 category_button.forEach(x => x.addEventListener('click', (event) => categoryMethod(event.target.textContent)))
+subCategoryButton.forEach(x => x.addEventListener('click', (event) => categoryMethod(event.target.textContent)))
 
 let automatic_poster = setInterval(() => {MovingInterval()}, 5000)
 
@@ -23,27 +25,38 @@ window.addEventListener('resize', function(){
     currentList.style.transition = 'none'
     if(document.body.clientWidth > 1000){moving = 30}else if(document.body.clientWidth > 500){moving = 70}
     currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+    if(document.body.clientWidth > 1000){document.querySelector('#subBox').style.left = -50 + 'vw'}
 })
+
+const SubCategory = (num) => {
+    document.querySelector('#subBox').style.transition = '1s'
+    if(num == 1){document.querySelector('#subBox').style.left = 0;}
+    else{document.querySelector('#subBox').style.left = -50 + 'vw'}
+    setTimeout(()=>{
+        document.querySelector('#subBox').style.transition = '0s'
+    },1)
+}
 
 const keywordMethod = () => {
     let keyword = document.querySelector('#keyword').value
     url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
+    document.querySelector("#search-box").style.display = 'none';
+    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
     NoRepeat()
 }
 
 const keywordFocus = () => {
-    document.querySelector("#keyword").placeholder = ''
+    document.querySelector("#keyword").placeholder = '';
 }
 
-const searchClose = () => {
-    document.querySelector("#search-box").style.display = 'none';
-    document.querySelector("#keyword").value = '';
-    document.querySelector("#keyword").placeholder = '키워드를 입력하세요.'
-}
-
-const openSearchBox = () => {
-    document.querySelector("#search-box").style.display = 'flex';
+const SearchBox = (num) => {
+    if(num == 1){document.querySelector("#search-box").style.display = 'flex';}
+    else{
+        document.querySelector("#search-box").style.display = 'none';
+        document.querySelector("#keyword").value = '';
+        document.querySelector("#keyword").placeholder = '키워드를 입력하세요.'
+    }
 }
 
 function MovingInterval(){
@@ -123,7 +136,9 @@ const categoryMethod = (event) => {
         case '서부': category = 37; break;
     }
     url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc&with_genres=${category}&api_key=${API_KEY}`)
+    document.querySelector('#subBox').style.left = -50 + 'vw'
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + event + "\" " + "영화"
+    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
     NoRepeat()
 }
 
