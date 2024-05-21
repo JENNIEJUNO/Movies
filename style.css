@@ -105,7 +105,7 @@ button{
 }
 .current-item{
     width:30vw;
-    padding:0 0.1vw;/*여백을 없애기 위함*/
+    padding:0 0.2vw;/*여백을 없애기 위함*/
     height:100%;
     box-sizing:border-box;
 }
@@ -303,6 +303,15 @@ button{
         color:white;
         margin:2vw 1vw;
         cursor: pointer;
+    }
+    #search-box{
+        width:100vw;
+    }
+    #text_search p{
+        font-size:4vw;
+    }
+    #keyword{
+        width:35vw;
     }
     .sub-close-button{
         color:white;
