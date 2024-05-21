@@ -23,7 +23,7 @@ let automatic_poster = setInterval(() => {MovingInterval()}, 5000)
 
 window.addEventListener('resize', function(){
     currentList.style.transition = 'none'
-    if(document.body.clientWidth > 1000){moving = 30}else if(document.body.clientWidth > 500){moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
     currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
     if(document.body.clientWidth > 1000){document.querySelector('#subBox').style.left = -50 + 'vw'}
 })
@@ -61,7 +61,7 @@ const SearchBox = (num) => {
 
 function MovingInterval(){
     currentList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
-    if(document.body.clientWidth > 1000){moving = 30}else if(document.body.clientWidth > 500){moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
     current_moving_count--;
     currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
     if(current_moving_count === -21){
@@ -76,7 +76,7 @@ function MovingInterval(){
 
 const moving_poster = (event) => {
     console.log('event', event)
-    if(document.body.clientWidth > 1000){moving = 30}else if(document.body.clientWidth > 500){moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
     if(!flag) return
     flag = false;
     clearInterval(automatic_poster)
