@@ -8,6 +8,10 @@
 </head>
 <body>
     <div id="container">
+        <div id="miniButton">
+            <button onclick="SubCategory(1)"><i class="fa-solid fa-bars"></i></button>
+            <button onclick="SearchBox(1)"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
         <div id="title"><i class="fa-solid fa-film"></i> Movie List</div>
         <div id="category-menus">
             <button>액션</button>
@@ -28,7 +32,7 @@
             <button>스릴러</button>
             <button>전쟁</button>
             <button>서부</button>
-            <span><button onclick="openSearchBox()"><i class="fa-solid fa-magnifying-glass"></i></button></span>
+            <span><button onclick="SearchBox(1)"><i class="fa-solid fa-magnifying-glass"></i></button></span>
         </div>
         <div id="movies">
             <div id="current-box">
@@ -53,7 +57,7 @@
             </div>
         </div>
         <div id="search-box">
-            <div id="search-close"><i class="fa-solid fa-x search-close-button" onclick="searchClose()"></i></div>
+            <div id="search-close"><i class="fa-solid fa-x search-close-button" onclick="SearchBox(2)"></i></div>
             <div id="text_search">
                 <p>찾고 싶은 영화를 입력하세요.</p>
                 <div id="input_keyword">
@@ -62,6 +66,27 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div id="subBox">
+        <span><button><i class="fa-solid fa-x sub-close-button" onclick="SubCategory(2)"></i></button></span>
+        <button>액션</button>
+        <button>모험</button>
+        <button>애니메이션</button>
+        <button>코미디</button>
+        <button>범죄</button>
+        <button>다큐멘터리</button>
+        <button>드라마</button>
+        <button>판타지</button>
+        <button>역사</button>
+        <button>공포</button>
+        <button>음악</button>
+        <button>미스터리</button>
+        <button>로맨스</button>
+        <button>SF</button>
+        <button>TV 영화</button>
+        <button>스릴러</button>
+        <button>전쟁</button>
+        <button>서부</button>
     </div>
     <script src="https://kit.fontawesome.com/afd0d34fd5.js" crossorigin="anonymous"></script>
     <script src="main.js"></script>
