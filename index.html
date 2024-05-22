@@ -1,94 +1,367 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="container">
-        <div id="miniButton">
-            <button onclick="SubCategory(1)"><i class="fa-solid fa-bars"></i></button>
-            <button onclick="SearchBox(1)"><i class="fa-solid fa-magnifying-glass"></i></button>
-        </div>
-        <div id="title"><i class="fa-solid fa-film"></i> Movie List</div>
-        <div id="category-menus">
-            <button>액션</button>
-            <button>모험</button>
-            <button>애니메이션</button>
-            <button>코미디</button>
-            <button>범죄</button>
-            <button>다큐멘터리</button>
-            <button>드라마</button>
-            <button>판타지</button>
-            <button>역사</button>
-            <button>공포</button>
-            <button>음악</button>
-            <button>미스터리</button>
-            <button>로맨스</button>
-            <button>SF</button>
-            <button>TV 영화</button>
-            <button>스릴러</button>
-            <button>전쟁</button>
-            <button>서부</button>
-            <span><button onclick="SearchBox(1)"><i class="fa-solid fa-magnifying-glass"></i></button></span>
-        </div>
-        <div id="movies">
-            <div id="current-box">
-                <p class="movie-text"><i class="fa-solid fa-video"></i> 현재 상영중</p>
-                <div id="current-movie">
-                    <button id="left"><</button>
-                    <button id="right">></button>
-                    <div id="current-list">
-
-                    </div>
-                </div>
-            </div>
-            <div id="category-box">
-                <p class="movie-text">Best 영화</p>
-                <div id="category-list">
-                    <div id="list">
-
-                    </div>
-                    <div id="pagination">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="search-box">
-            <div id="search-close"><i class="fa-solid fa-x search-close-button" onclick="SearchBox(2)"></i></div>
-            <div id="text_search">
-                <p>찾고 싶은 영화를 입력하세요.</p>
-                <div id="input_keyword">
-                    <input type="text" id="keyword" onfocus="keywordFocus()" placeholder="키워드를 입력하세요.">
-                    <button id="click_keyword" onclick="keywordMethod()"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="subBox">
-        <span><button><i class="fa-solid fa-x sub-close-button" onclick="SubCategory(2)"></i></button></span>
-        <button>액션</button>
-        <button>모험</button>
-        <button>애니메이션</button>
-        <button>코미디</button>
-        <button>범죄</button>
-        <button>다큐멘터리</button>
-        <button>드라마</button>
-        <button>판타지</button>
-        <button>역사</button>
-        <button>공포</button>
-        <button>음악</button>
-        <button>미스터리</button>
-        <button>로맨스</button>
-        <button>SF</button>
-        <button>TV 영화</button>
-        <button>스릴러</button>
-        <button>전쟁</button>
-        <button>서부</button>
-    </div>
-    <script src="https://kit.fontawesome.com/afd0d34fd5.js" crossorigin="anonymous"></script>
-    <script src="main.js"></script>
-</body>
-</html>
+*{
+    margin:0px;
+    padding:0px;
+}
+body{
+    background-color:black;
+}
+p{
+    padding:0px;
+}
+button{
+    background:none;
+    border:none;
+}
+#container{
+    width:80vw;
+    margin:auto;
+}
+#title{
+    position: relative;
+    left:-3vw;
+    width:100%;
+    font-size:3vw;
+    font-weight:700;
+    color:rgb(168, 7, 7);
+    text-align:center;
+    padding:2vw;
+}
+#category-menus{
+    width:100%;
+    display:flex;
+    justify-content:space-evenly;
+    border-bottom:0.1vw solid white;
+}
+#category-menus button{
+    font-size:1vw;
+    padding-bottom:2vw;
+    color:white;
+    cursor:pointer;
+}
+#category-menus button:hover{
+    color:rgb(168, 7, 7);
+}
+#movies{
+    display:flex;
+    width:100%;
+    height:45vw;
+}
+#current-box{
+    flex:4;
+}
+#category-box{
+    flex:6;
+}
+.movie-text{
+    color:white;
+    text-align:center;
+    padding:1vw;
+    font-size:2vw;
+    font-weight:700;
+}
+#current-movie{
+    margin:auto;
+    position:relative;
+    width:30vw;
+    height:40vw;
+    overflow:hidden;
+}
+#left{
+    position:absolute;
+    color:white;
+    z-index:1;
+    width:8%;
+    height:100%;
+    left:0;
+    display:flex;
+    font-size:3vw;
+    opacity:0.5;
+    justify-content:end;
+    align-items:center;
+    cursor: pointer;
+}
+#right{
+    position:absolute;
+    color:white;
+    z-index:1;
+    height:100%;
+    width:8%;
+    right:0;
+    font-size:3vw;
+    opacity:0.5;
+    display:flex;
+    justify-content:start;
+    align-items:center;
+    cursor: pointer;
+}
+#left:hover, #right:hover{
+    opacity:1;
+}
+#current-list{
+    display:flex;
+    width:660vw;
+    height:100%;
+    transform:translateX(-30vw);
+}
+.current-item{
+    width:30vw;
+    padding:0 0.2vw;/*여백을 없애기 위함*/
+    height:100%;
+    box-sizing:border-box;
+}
+.current-item img{
+    width:100%;
+    height:100%;
+}
+#category-list{
+    margin:auto;
+    width:90%;
+    height:40vw;
+}
+#list{
+    display:flex;
+    justify-content:space-evenly;
+    flex-wrap:wrap;
+    width:100%;
+    height:36vw;
+    overflow:hidden;
+}
+.category-item{
+    width:11vw;
+    margin-bottom:2vw;
+    cursor:pointer;
+}
+.category-item img{
+    width:100%;
+    height:14.5vw;
+}
+.category-item p{
+    text-align:center;
+    font-size:1vw;
+    color:white;
+}
+#pagination{
+    width:100%;
+    height:4vw;
+    display:flex;
+    justify-content:center;
+    align-items:end;
+}
+#pagination button{
+    font-size:1vw;
+    font-weight:700;
+    padding:0.5vw;
+    color:white;
+    cursor:pointer;
+}
+#pagination button:hover{
+    color:rgb(168, 7, 7);
+}
+#search-box{
+    display:none;
+    justify-content:center;
+    align-items:center;
+    position:fixed;
+    margin:auto;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:70vw;
+    height:40vw;
+    background-color:rgb(24, 24, 24);
+    opacity:0.9;
+    z-index:1;
+}
+#search-close{
+    position:absolute;
+    top:0;
+    right:0;
+    font-size:2vw;
+    color:white;
+    padding:2vw;
+}
+.search-close-button{
+    cursor:pointer;
+}
+#text_search{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+#text_search p{
+    font-size:3vw;
+    padding:2vw;
+    color:white;
+}
+#keyword{
+    width:25vw;
+    height:3vw;
+    margin-right:1vw;
+    font-size:2vw;
+    border:0.2vw solid rgb(168, 7, 7);
+}
+#click_keyword{
+    font-size:2vw;
+    color:white;
+    cursor:pointer;
+}
+#miniButton{
+    display:none;
+}
+#subBox{
+    position:fixed;
+    top:0; bottom:0;
+    width:50vw;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    left:-50vw;
+    background-color:rgb(24, 24, 24);
+    z-index:1;
+}
+#subBox>button{
+    cursor:pointer;
+    font-size:0.9em;
+    padding:0.8vw;
+    color:white;
+}
+#subBox>button:hover{
+    color:rgb(168, 7, 7);
+}
+#subBox>span>button{
+    width:100%;
+    font-size:0.9em;
+    text-align:end;
+    padding:0.8vw;
+}
+@media (max-width:1000px){
+    #title{
+        font-size:5vw;
+    }
+    #category-menus{
+        display:none;
+    }
+    #movies{
+        flex-direction:column;
+        height:209vw;
+    }
+    #current-box{
+        flex:5.5;
+    }
+    #category-box{
+        flex:4.5;
+        overflow:hidden;
+    }
+    .movie-text{
+        font-size:4vw;
+        padding:2vw;
+    }
+    #current-movie{
+        width:70vw;
+        height:90%;
+    }
+    #left, #right{
+        font-size:6vw;
+    }
+    #current-list{
+        width:1540vw;
+        transform:translateX(-70vw);
+    }
+    .current-item{
+        width:70vw;
+    }
+    #category-list{
+        height:80vw;
+    }
+    #list{
+        height:90%;
+    }
+    .category-item{
+        width:19vw;
+    }
+    .category-item img{
+        height:24vw;
+    }
+    .category-item p{
+        font-size:1.8vw;
+    }
+    #pagination{
+        height:10%;
+        align-items:center;
+    }
+    #pagination button{
+        font-size:2vw;
+        padding:1vw;
+    }
+    #miniButton{
+        display:block;
+    }
+    #miniButton button{
+        font-size:2.5vw;
+        color:white;
+        margin:2vw 1vw;
+        cursor: pointer;
+    }
+    #search-box{
+        width:100vw;
+    }
+    #text_search p{
+        font-size:4vw;
+    }
+    #keyword{
+        width:40vw;
+        height:6vw;
+        font-size:4vw;
+    }
+    .sub-close-button{
+        color:white;
+        cursor:pointer;
+    }
+    #search-close{
+        font-size:4vw;
+        padding:4vw;
+    }
+    #click_keyword{
+        font-size:4vw;
+    }
+}
+@media (max-width:500px){
+    #movies{
+        height:300vw;
+    }
+    #current-box{
+        flex:4;
+    }
+    #category-box{
+        flex:6;
+    }
+    #category-list{
+        height:170vw;
+    }
+    #list{
+        height:95%;
+    }
+    .category-item{
+        width:29vw;
+    }
+    .category-item img{
+        height:40vw;
+    }
+    .category-item p{
+        font-size:2.4vw;
+    }
+    #pagination{
+        height:5%;
+    }
+    #pagination button{
+        font-size:3vw;
+        padding:1.5vw;
+        color:white;
+    }
+    #subBox>button, #subBox>span>button{
+        font-size:0.8em;
+        padding:1.5vw;
+    }
+}
