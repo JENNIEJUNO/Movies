@@ -23,7 +23,9 @@ let automatic_poster = setInterval(() => {MovingInterval()}, 5000)
 
 window.addEventListener('resize', function(){
     currentList.style.transition = 'none'
-    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}
+    else if(document.body.clientWidth > 500){moving = 70}
+    else{moving = 80}
     currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
     if(document.body.clientWidth > 1000){document.querySelector('#subBox').style.left = -50 + 'vw'}
 })
@@ -45,10 +47,7 @@ const keywordMethod = () => {
     url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
     document.querySelector("#search-box").style.display = 'none';
-    window.scrollTo({
-        top: document.querySelector('#category-box').offsetTop,
-        behavior: 'smooth'
-    });
+    window.scrollTo({top: document.querySelector('#category-box').offsetTop, behavior: 'smooth'});
     NoRepeat()
 }
 
@@ -67,7 +66,9 @@ const SearchBox = (num) => {
 
 function MovingInterval(){
     currentList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
-    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}
+    else if(document.body.clientWidth > 500){moving = 70}
+    else{moving = 80}
     current_moving_count--;
     currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
     if(current_moving_count === -21){
@@ -82,7 +83,9 @@ function MovingInterval(){
 
 const moving_poster = (event) => {
     console.log('event', event)
-    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    if(document.body.clientWidth > 1000){moving = 30}
+    else if(document.body.clientWidth > 500){moving = 70}
+    else{moving = 80}
     if(!flag) return
     flag = false;
     clearInterval(automatic_poster)
@@ -144,10 +147,7 @@ const categoryMethod = (event) => {
     url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc&with_genres=${category}&api_key=${API_KEY}`)
     document.querySelector('#subBox').style.left = -50 + 'vw'
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + event + "\" " + "영화"
-    window.scrollTo({
-        top: document.querySelector('#category-box').offsetTop,
-        behavior: 'smooth'
-    });
+    window.scrollTo({top: document.querySelector('#category-box').offsetTop, behavior: 'smooth'});
     NoRepeat()
 }
 
