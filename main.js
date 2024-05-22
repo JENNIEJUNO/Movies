@@ -38,7 +38,10 @@ const SubCategory = (num) => {
 }
 
 const keywordMethod = () => {
+    page = 1;
     let keyword = document.querySelector('#keyword').value
+    document.querySelector("#keyword").value = '';
+    document.querySelector("#keyword").placeholder = '키워드를 입력하세요.';
     url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
     document.querySelector("#search-box").style.display = 'none';
