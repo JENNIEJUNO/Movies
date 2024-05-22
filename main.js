@@ -45,7 +45,10 @@ const keywordMethod = () => {
     url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
     document.querySelector("#search-box").style.display = 'none';
-    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
+    window.scrollTo({
+        top: document.querySelector('#category-box').offsetTop,
+        behavior: 'smooth'
+    });
     NoRepeat()
 }
 
@@ -141,7 +144,10 @@ const categoryMethod = (event) => {
     url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc&with_genres=${category}&api_key=${API_KEY}`)
     document.querySelector('#subBox').style.left = -50 + 'vw'
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + event + "\" " + "영화"
-    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
+    window.scrollTo({
+        top: document.querySelector('#category-box').offsetTop,
+        behavior: 'smooth'
+    });
     NoRepeat()
 }
 
