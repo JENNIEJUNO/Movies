@@ -319,11 +319,11 @@ button{
         cursor:pointer;
     }
     #search-close{
-        font-size:2em;
+        font-size:4vw;
         padding:4vw;
     }
     #click_keyword{
-        font-size:2em;
+        font-size:4vw;
     }
 }
 @media (max-width:500px){
