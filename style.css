@@ -211,20 +211,19 @@ button{
     display:none;
 }
 #subBox{
+    position:fixed;
+    top:0; bottom:0;
     width:50vw;
-    overflow:hidden;
     display:flex;
     flex-direction:column;
-    position:fixed;
-    left:-50vw;
-    top:0;
+    justify-content:center;
     background-color:rgb(24, 24, 24);
     z-index:1;
 }
 #subBox>button{
     cursor:pointer;
-    font-size:2vw;
-    padding:1vw;
+    font-size:0.9em;
+    padding:0.8vw;
     color:white;
 }
 #subBox>button:hover{
@@ -232,9 +231,9 @@ button{
 }
 #subBox>span>button{
     width:100%;
-    font-size:2vw;
+    font-size:0.9em;
     text-align:end;
-    padding:1.9vw;
+    padding:0.8vw;
 }
 @media (max-width:1000px){
     #title{
@@ -311,11 +310,20 @@ button{
         font-size:4vw;
     }
     #keyword{
-        width:35vw;
+        width:40vw;
+        height:6vw;
+        font-size:4vw;
     }
     .sub-close-button{
         color:white;
         cursor:pointer;
+    }
+    #search-close{
+        font-size:2em;
+        padding:4vw;
+    }
+    #click_keyword{
+        font-size:2em;
     }
 }
 @media (max-width:500px){
@@ -350,5 +358,9 @@ button{
         font-size:3vw;
         padding:1.5vw;
         color:white;
+    }
+    #subBox>button, #subBox>span>button{
+        font-size:2vw;
+        padding:1.5vw;
     }
 }
