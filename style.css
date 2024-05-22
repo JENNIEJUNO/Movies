@@ -1,367 +1,259 @@
-*{
-    margin:0px;
-    padding:0px;
+let API_KEY = `758085914c59faad7a7183c8a00f9931`
+let url = ''
+let dataList = ''
+let totalResults = 0//총 results
+let page = 1 // 현재페이지
+let pageSize = 6 //한페이지에 보여 줄 results
+let groupSize = 3
+let category_button = document.querySelectorAll('#category-menus > button')
+let subCategoryButton = document.querySelectorAll("#subBox > button")
+let flag = true
+let current_moving_count = -1; // left right 버튼
+let currentBox = document.querySelector('#current-movie')
+let currentList = document.querySelector('#current-list')
+let moving = 0
+let leftRight = document.querySelectorAll('#current-movie button')
+
+
+leftRight.forEach(x => x.addEventListener('click', (event) => moving_poster(event.target.id)))
+category_button.forEach(x => x.addEventListener('click', (event) => categoryMethod(event.target.textContent)))
+subCategoryButton.forEach(x => x.addEventListener('click', (event) => categoryMethod(event.target.textContent)))
+
+let automatic_poster = setInterval(() => {MovingInterval()}, 5000)
+
+window.addEventListener('resize', function(){
+    currentList.style.transition = 'none'
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+    if(document.body.clientWidth > 1000){document.querySelector('#subBox').style.left = -50 + 'vw'}
+})
+
+const SubCategory = (num) => {
+    document.querySelector('#subBox').style.transition = '1s'
+    if(num == 1){document.querySelector('#subBox').style.left = 0;}
+    else{document.querySelector('#subBox').style.left = -50 + 'vw'}
+    setTimeout(()=>{
+        document.querySelector('#subBox').style.transition = '0s'
+    },1)
 }
-body{
-    background-color:black;
+
+const keywordMethod = () => {
+    page = 1;
+    let keyword = document.querySelector('#keyword').value
+    document.querySelector("#keyword").value = '';
+    document.querySelector("#keyword").placeholder = '키워드를 입력하세요.';
+    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
+    url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
+    document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
+    document.querySelector("#search-box").style.display = 'none';
+    NoRepeat()
 }
-p{
-    padding:0px;
+
+const keywordFocus = () => {
+    document.querySelector("#keyword").placeholder = '';
 }
-button{
-    background:none;
-    border:none;
-}
-#container{
-    width:80vw;
-    margin:auto;
-}
-#title{
-    position: relative;
-    left:-3vw;
-    width:100%;
-    font-size:3vw;
-    font-weight:700;
-    color:rgb(168, 7, 7);
-    text-align:center;
-    padding:2vw;
-}
-#category-menus{
-    width:100%;
-    display:flex;
-    justify-content:space-evenly;
-    border-bottom:0.1vw solid white;
-}
-#category-menus button{
-    font-size:1vw;
-    padding-bottom:2vw;
-    color:white;
-    cursor:pointer;
-}
-#category-menus button:hover{
-    color:rgb(168, 7, 7);
-}
-#movies{
-    display:flex;
-    width:100%;
-    height:45vw;
-}
-#current-box{
-    flex:4;
-}
-#category-box{
-    flex:6;
-}
-.movie-text{
-    color:white;
-    text-align:center;
-    padding:1vw;
-    font-size:2vw;
-    font-weight:700;
-}
-#current-movie{
-    margin:auto;
-    position:relative;
-    width:30vw;
-    height:40vw;
-    overflow:hidden;
-}
-#left{
-    position:absolute;
-    color:white;
-    z-index:1;
-    width:8%;
-    height:100%;
-    left:0;
-    display:flex;
-    font-size:3vw;
-    opacity:0.5;
-    justify-content:end;
-    align-items:center;
-    cursor: pointer;
-}
-#right{
-    position:absolute;
-    color:white;
-    z-index:1;
-    height:100%;
-    width:8%;
-    right:0;
-    font-size:3vw;
-    opacity:0.5;
-    display:flex;
-    justify-content:start;
-    align-items:center;
-    cursor: pointer;
-}
-#left:hover, #right:hover{
-    opacity:1;
-}
-#current-list{
-    display:flex;
-    width:660vw;
-    height:100%;
-    transform:translateX(-30vw);
-}
-.current-item{
-    width:30vw;
-    padding:0 0.2vw;/*여백을 없애기 위함*/
-    height:100%;
-    box-sizing:border-box;
-}
-.current-item img{
-    width:100%;
-    height:100%;
-}
-#category-list{
-    margin:auto;
-    width:90%;
-    height:40vw;
-}
-#list{
-    display:flex;
-    justify-content:space-evenly;
-    flex-wrap:wrap;
-    width:100%;
-    height:36vw;
-    overflow:hidden;
-}
-.category-item{
-    width:11vw;
-    margin-bottom:2vw;
-    cursor:pointer;
-}
-.category-item img{
-    width:100%;
-    height:14.5vw;
-}
-.category-item p{
-    text-align:center;
-    font-size:1vw;
-    color:white;
-}
-#pagination{
-    width:100%;
-    height:4vw;
-    display:flex;
-    justify-content:center;
-    align-items:end;
-}
-#pagination button{
-    font-size:1vw;
-    font-weight:700;
-    padding:0.5vw;
-    color:white;
-    cursor:pointer;
-}
-#pagination button:hover{
-    color:rgb(168, 7, 7);
-}
-#search-box{
-    display:none;
-    justify-content:center;
-    align-items:center;
-    position:fixed;
-    margin:auto;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    width:70vw;
-    height:40vw;
-    background-color:rgb(24, 24, 24);
-    opacity:0.9;
-    z-index:1;
-}
-#search-close{
-    position:absolute;
-    top:0;
-    right:0;
-    font-size:2vw;
-    color:white;
-    padding:2vw;
-}
-.search-close-button{
-    cursor:pointer;
-}
-#text_search{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-#text_search p{
-    font-size:3vw;
-    padding:2vw;
-    color:white;
-}
-#keyword{
-    width:25vw;
-    height:3vw;
-    margin-right:1vw;
-    font-size:2vw;
-    border:0.2vw solid rgb(168, 7, 7);
-}
-#click_keyword{
-    font-size:2vw;
-    color:white;
-    cursor:pointer;
-}
-#miniButton{
-    display:none;
-}
-#subBox{
-    position:fixed;
-    top:0; bottom:0;
-    width:50vw;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    left:-50vw;
-    background-color:rgb(24, 24, 24);
-    z-index:1;
-}
-#subBox>button{
-    cursor:pointer;
-    font-size:0.9em;
-    padding:0.8vw;
-    color:white;
-}
-#subBox>button:hover{
-    color:rgb(168, 7, 7);
-}
-#subBox>span>button{
-    width:100%;
-    font-size:0.9em;
-    text-align:end;
-    padding:0.8vw;
-}
-@media (max-width:1000px){
-    #title{
-        font-size:5vw;
-    }
-    #category-menus{
-        display:none;
-    }
-    #movies{
-        flex-direction:column;
-        height:209vw;
-    }
-    #current-box{
-        flex:5.5;
-    }
-    #category-box{
-        flex:4.5;
-        overflow:hidden;
-    }
-    .movie-text{
-        font-size:4vw;
-        padding:2vw;
-    }
-    #current-movie{
-        width:70vw;
-        height:90%;
-    }
-    #left, #right{
-        font-size:6vw;
-    }
-    #current-list{
-        width:1540vw;
-        transform:translateX(-70vw);
-    }
-    .current-item{
-        width:70vw;
-    }
-    #category-list{
-        height:80vw;
-    }
-    #list{
-        height:90%;
-    }
-    .category-item{
-        width:19vw;
-    }
-    .category-item img{
-        height:24vw;
-    }
-    .category-item p{
-        font-size:1.8vw;
-    }
-    #pagination{
-        height:10%;
-        align-items:center;
-    }
-    #pagination button{
-        font-size:2vw;
-        padding:1vw;
-    }
-    #miniButton{
-        display:block;
-    }
-    #miniButton button{
-        font-size:2.5vw;
-        color:white;
-        margin:2vw 1vw;
-        cursor: pointer;
-    }
-    #search-box{
-        width:100vw;
-    }
-    #text_search p{
-        font-size:4vw;
-    }
-    #keyword{
-        width:40vw;
-        height:6vw;
-        font-size:4vw;
-    }
-    .sub-close-button{
-        color:white;
-        cursor:pointer;
-    }
-    #search-close{
-        font-size:4vw;
-        padding:4vw;
-    }
-    #click_keyword{
-        font-size:4vw;
+
+const SearchBox = (num) => {
+    if(num == 1){document.querySelector("#search-box").style.display = 'flex';}
+    else{
+        document.querySelector("#search-box").style.display = 'none';
+        document.querySelector("#keyword").value = '';
+        document.querySelector("#keyword").placeholder = '키워드를 입력하세요.'
     }
 }
-@media (max-width:500px){
-    #movies{
-        height:300vw;
-    }
-    #current-box{
-        flex:4;
-    }
-    #category-box{
-        flex:6;
-    }
-    #category-list{
-        height:170vw;
-    }
-    #list{
-        height:95%;
-    }
-    .category-item{
-        width:29vw;
-    }
-    .category-item img{
-        height:40vw;
-    }
-    .category-item p{
-        font-size:2.4vw;
-    }
-    #pagination{
-        height:5%;
-    }
-    #pagination button{
-        font-size:3vw;
-        padding:1.5vw;
-        color:white;
-    }
-    #subBox>button, #subBox>span>button{
-        font-size:0.8em;
-        padding:1.5vw;
+
+function MovingInterval(){
+    currentList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    current_moving_count--;
+    currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+    if(current_moving_count === -21){
+        currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+        current_moving_count = -1
+        setTimeout(()=>{
+            currentList.style.transition = 'none'
+            currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+        }, 500)
     }
 }
+
+const moving_poster = (event) => {
+    console.log('event', event)
+    if(document.body.clientWidth > 1000){moving = 30}else{moving = 70}
+    if(!flag) return
+    flag = false;
+    clearInterval(automatic_poster)
+    setTimeout(() => {
+        flag = true
+        automatic_poster = setInterval(()=>{MovingInterval()}, 5000)
+    }, 1000)
+    currentList.style.transition = '1s' // resize시 transition = '0s' 이 되기 때문에 
+    if(event == 'right'){
+        current_moving_count--;
+        currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+        if(current_moving_count === -21){
+            currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+            current_moving_count = -1
+            setTimeout(()=>{
+                currentList.style.transition = 'none'
+                currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+            }, 1000)
+        }
+    }else if (event == 'left') {
+        current_moving_count++;
+        currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+        if(current_moving_count === 0){
+            currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+            current_moving_count = -20
+            setTimeout(()=>{
+                currentList.style.transition = 'none'
+                currentList.style.transform = `translateX(${current_moving_count * moving}vw)`
+            }, 1000)
+        }
+    }
+}
+
+const categoryMethod = (event) => {
+    page = 1;
+    let category = 0
+    //숫자는 id 값에 따라 장르가 지정 됨
+    switch(event){
+        case '액션': category = 28; break;
+        case '모험': category = 12; break;
+        case '애니메이션': category = 16; break;
+        case '코미디': category = 35; break;
+        case '범죄': category = 80; break;
+        case '다큐멘터리': category = 99; break;
+        case '드라마': category = 18; break;
+        case '가족': category = 10751; break;
+        case '판타지': category = 14; break;
+        case '역사': category = 36; break;
+        case '공포': category = 27; break;
+        case '음악': category = 10402; break;
+        case '미스터리': category = 9648; break;
+        case '로맨스': category = 10749; break;
+        case 'SF': category = 878; break;
+        case 'TV 영화': category = 10770; break;
+        case '스릴러': category = 53; break;
+        case '전쟁': category = 10752; break;
+        case '서부': category = 37; break;
+    }
+    url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc&with_genres=${category}&api_key=${API_KEY}`)
+    document.querySelector('#subBox').style.left = -50 + 'vw'
+    document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + event + "\" " + "영화"
+    document.querySelector('#category-box').scrollIntoView({behavior: 'smooth'})
+    NoRepeat()
+}
+
+const pageMethod = (pageNum) => {
+    page = pageNum
+    NoRepeat()
+}
+
+const paginationMethod = () => {
+    let totalPage = Math.ceil(totalResults / pageSize)
+    let groupPage = Math.ceil(page / groupSize)
+    let lastNum = groupPage * groupSize > totalPage ? totalPage : groupPage * groupSize
+    let firstNum = lastNum - (groupSize - 1) < 1 ? 1 : lastNum - (groupSize - 1)
+    
+    let paginationHTML = ''
+    paginationHTML += 
+    `<button onclick="pageMethod(${1})" style=${page <= 1 ? 'display:none' : ''}><<</button>
+    <button onclick="pageMethod(${page - 1})" style=${page <= 1 ? 'display:none' : ''}><</button>`
+
+    for(let i = firstNum; i <= lastNum; i++){
+        paginationHTML += 
+        `<button onclick="pageMethod(${i})" style="${page == i ? 'background-color:rgb(168, 7, 7);' : ''}">${i}</button>`
+
+    }
+
+    paginationHTML += 
+    `<button onclick="pageMethod(${page + 1})" style=${page >= totalPage ? 'display:none' : ''}>></button>
+    <button onclick="pageMethod(${totalPage})" style=${page >= totalPage ? 'display:none' : ''}>>></button>`
+
+    document.querySelector('#pagination').innerHTML = paginationHTML
+}
+
+const posterMethod = (poster) => {
+    return `https://image.tmdb.org/t/p/w500` + poster
+}
+
+//current movies
+const CurrentList = async () => {
+    let current_url = new URL(`https://api.themoviedb.org/3/movie/now_playing?language=ko-KR&api_key=${API_KEY}`)
+    let currentMovies = ''
+    try{
+        let current_response = await fetch(current_url)
+        console.log('current_response', current_response)
+        let current_data = await current_response.json()
+        console.log('current_data', current_data)
+        let current_dataList = current_data.results
+        console.log('current_dataList', current_dataList)
+        if(current_response.status === 200){
+            currentMovies += 
+            `<div class="current-item">
+                <img src=${posterMethod(current_dataList[current_dataList.length - 1].poster_path)}>
+            </div>`
+            current_dataList.map(x => 
+                currentMovies += 
+                `<div class="current-item">
+                    <img src=${posterMethod(x.poster_path)}>
+                </div>`
+            )
+            currentMovies += 
+            `<div class="current-item">
+                <img src=${posterMethod(current_dataList[0].poster_path)}>
+            </div>`
+
+            document.querySelector('#current-list').innerHTML = currentMovies
+        }else{
+            throw new Error(current_data.message)
+        }
+    }catch(error){
+        console.log('error', error.message)
+    }
+}
+
+//Best or category movies
+const CategoryRender = () => {
+    //movie list item
+    let CategoryHTML = ''
+    let start = (page - 1) * 6
+    console.log('start', start)
+    for(let i = start; i < (start + 6 <= totalResults ? start + 6 : totalResults); i++){
+        CategoryHTML += 
+        `<div class="category-item">
+            <img src=${posterMethod(dataList[i].poster_path)}>
+            <p>${dataList[i].title}</p>
+        </div>`
+    }
+    document.querySelector('#list').innerHTML = CategoryHTML
+}
+
+const NoRepeat = async () => {
+    try{
+        let response = await fetch(url)
+        console.log('response', response)
+        let data = await response.json()
+        console.log('data', data)
+        dataList = data.results
+        totalResults = dataList.length
+        console.log('totalResults', totalResults)
+        if(response.status === 200){
+            CategoryRender()
+            paginationMethod()
+        }else{
+            throw new Error(data.message)
+        }
+    }catch(error){
+        console.log('error', error.message)
+    }
+}
+
+const CategoryList = () => {
+    url = new URL(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&sort_by=popularity.desc?&api_key=${API_KEY}`)
+    NoRepeat()
+}
+
+CategoryList()
+CurrentList()
