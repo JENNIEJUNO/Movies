@@ -47,7 +47,10 @@ const keywordMethod = () => {
     url = new URL(`https://api.themoviedb.org/3/search/movie?query=${keyword}&language=ko&region=KR&api_key=${API_KEY}`)
     document.querySelectorAll('.movie-text')[1].innerHTML = "\"" + keyword + "\" " + "으로 검색한 결과"
     document.querySelector("#search-box").style.display = 'none';
-    window.scrollTo({top: document.querySelector('#category-box').offsetTop, behavior: 'smooth'});
+    setTimeout(() => {
+        window.scrollTo({ top: document.querySelector('#category-box').offsetTop, behavior: 'smooth' });
+    }, 300);
+    
     NoRepeat()
 }
 
