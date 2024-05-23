@@ -391,6 +391,29 @@ img{
     #click_keyword{
         font-size:4vw;
     }
+    #movie_information{
+        width:60vw;
+    }
+    #information_title{
+        font-size:3vw;
+        padding:2vw;
+    }
+    #information_title button{
+        font-size:3vw;
+    }
+    #information_section{
+        height:70vw;
+    }
+    #information_section img{
+        margin:2vw auto;
+    }
+    #information_section p{
+        font-size:2.2vw;
+        padding:2vw;
+    }
+    #movie_star, #movie_rating{
+        font-size:2.2vw;
+    }
 }
 @media (max-width:500px){
     #movies{
@@ -445,5 +468,27 @@ img{
     #subBox>button, #subBox>span>button{
         font-size:0.8em;
         padding:1.5vw;
+    }
+    #movie_information{
+        width:100%;
+    }
+    #information_title{
+        font-size:4vw;
+    }
+    #information_title button{
+        font-size:4vw;
+    }
+    #information_section{
+        height:120vw;
+    }
+    #information_section img{
+        margin:3vw auto;
+    }
+    #information_section p{
+        font-size:4vw;
+        padding:3vw;
+    }
+    #movie_star, #movie_rating{
+        font-size:4vw;
     }
 }
