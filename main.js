@@ -30,6 +30,62 @@ window.addEventListener('resize', function(){
     if(document.body.clientWidth > 1000){document.querySelector('#subBox').style.left = -50 + 'vw'}
 })
 
+const starRender = (num) => {
+    let starHTML = '';
+    let fullStar = 5
+    for(let i = 1; i <= Math.floor(num / 2); i++){
+        starHTML += '<i class="fa-solid fa-star"></i>'
+    }
+    if(Math.floor(num % 2) == 0){
+        if(Math.floor((num - Math.floor(num)) * 10) >= 5){
+            starHTML += '<i class="fa-solid fa-star-half-stroke"></i>'
+            fullStar -= Math.floor(num / 2 + 1);
+        }
+        else{fullStar -= Math.floor(num / 2);}
+    }
+    else{
+        if(Math.floor((num - Math.floor(num)) * 10) >= 5){
+            starHTML += '<i class="fa-solid fa-star"></i>'
+        }
+        else{
+            starHTML += '<i class="fa-solid fa-star-half-stroke"></i>'
+        }
+        fullStar -= Math.floor(num / 2 + 1);
+    }
+    for(let i = 1; i <= fullStar; i++){
+        starHTML += '<i class="fa-regular fa-star"></i>'
+    }
+    return starHTML
+}
+
+const movieInformation = (num) => {
+    console.log('num', num)
+    if(!num){
+        document.querySelector('#movie_information').style.display = 'none'
+        return;
+    }
+    else{
+        let InformationRender = ''
+        InformationRender = 
+        `<div id="information_title">
+            <p>${dataList[num - 1].title}</p>
+            <div>
+                <button><i class="fa-solid fa-x close_information" onclick="movieInformation()"></i></button>
+            </div>
+        </div>
+        <div id="information_section">
+            <img src=${posterMethod(dataList[num - 1].poster_path)}}>
+            <div id="movie_star">${starRender(dataList[num - 1].vote_average.toFixed(2))}</div>
+            <div id="movie_rating">${dataList[num - 1].vote_average.toFixed(2)}</div>
+            <p>${dataList[num - 1].overview}</p>
+        </div>
+        `
+
+        document.querySelector('#movie_information').innerHTML = InformationRender
+        document.querySelector('#movie_information').style.display = 'block';
+    }
+}
+
 const SubCategory = (num) => {
     document.querySelector('#subBox').style.transition = '1s'
     if(num == 1){document.querySelector('#subBox').style.left = 0;}
@@ -231,7 +287,7 @@ const CategoryRender = () => {
     console.log('start', start)
     for(let i = start; i < (start + 6 <= totalResults ? start + 6 : totalResults); i++){
         CategoryHTML += 
-        `<div class="category-item">
+        `<div class="category-item" onclick="movieInformation(${i + 1})">
             <img src=${posterMethod(dataList[i].poster_path)}>
             <p>${dataList[i].title}</p>
         </div>`
