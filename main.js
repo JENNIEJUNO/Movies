@@ -1,6 +1,7 @@
 let API_KEY = `758085914c59faad7a7183c8a00f9931`
 let url = ''
 let dataList = ''
+let current_dataList = ''
 let totalResults = 0//총 results
 let page = 1 // 현재페이지
 let pageSize = 6 //한페이지에 보여 줄 results
@@ -58,8 +59,10 @@ const starRender = (num) => {
     return starHTML
 }
 
-const movieInformation = (num) => {
-    if(!num){
+const movieInformation = (num, TypesOfMovies) => {
+    let TypesOfData = TypesOfMovies == 1 ? current_dataList :  dataList
+    console.log('TypesOfData', currentList[0])
+    if(num == -2){
         document.querySelector('#block').style.transition = '0.5s'
         document.querySelector('#block').style.opacity = '0';
         document.querySelector('#block').style.zIndex = '-1'
@@ -77,16 +80,16 @@ const movieInformation = (num) => {
         let InformationRender = ''
         InformationRender = 
         `<div id="information_title">
-            <p>${dataList[num - 1].title}</p>
+            <p>${TypesOfData[num].title}</p>
             <div>
-                <button><i class="fa-solid fa-x close_information" onclick="movieInformation()"></i></button>
+                <button><i class="fa-solid fa-x close_information" onclick="movieInformation(-2)"></i></button>
             </div>
         </div>
         <div id="information_section">
-            <img src=${posterMethod(dataList[num - 1].poster_path)}}>
-            <div id="movie_star">${starRender(dataList[num - 1].vote_average.toFixed(2))}</div>
-            <div id="movie_rating">${dataList[num - 1].vote_average.toFixed(2)}</div>
-            <p>${dataList[num - 1].overview}</p>
+            <img src=${posterMethod(TypesOfData[num].poster_path)}}>
+            <div id="movie_star">${starRender(TypesOfData[num].vote_average.toFixed(2))}</div>
+            <div id="movie_rating">${TypesOfData[num].vote_average.toFixed(2)}</div>
+            <p>${TypesOfData[num].overview}</p>
         </div>
         `
 
@@ -160,7 +163,6 @@ function MovingInterval(){
 }
 
 const moving_poster = (event) => {
-    console.log('event', event)
     if(document.body.clientWidth > 1000){moving = 30}
     else if(document.body.clientWidth > 500){moving = 70}
     else{moving = 80}
@@ -271,22 +273,31 @@ const CurrentList = async () => {
         console.log('current_response', current_response)
         let current_data = await current_response.json()
         console.log('current_data', current_data)
-        let current_dataList = current_data.results
+        current_dataList = current_data.results
         console.log('current_dataList', current_dataList)
         if(current_response.status === 200){
             currentMovies += 
             `<div class="current-item">
                 <img src=${posterMethod(current_dataList[current_dataList.length - 1].poster_path)}>
+                <div id="current_information" onclick="movieInformation(${19}, 1)">
+                        ${current_dataList[current_dataList.length - 1].title}
+                </div>
             </div>`
-            current_dataList.map(x => 
+            for(let i = 0; i < current_dataList.length; i++){ 
                 currentMovies += 
                 `<div class="current-item">
-                    <img src=${posterMethod(x.poster_path)}>
+                    <img src=${posterMethod(current_dataList[i].poster_path)}>
+                    <div id="current_information" onclick="movieInformation(${i}, 1)">
+                        ${current_dataList[i].title}
+                    </div>
                 </div>`
-            )
+            }
             currentMovies += 
             `<div class="current-item">
                 <img src=${posterMethod(current_dataList[0].poster_path)}>
+                <div id="current_information" onclick="movieInformation(${0}, 1)">
+                    ${current_dataList[0].title}
+                </div>
             </div>`
 
             document.querySelector('#current-list').innerHTML = currentMovies
@@ -306,7 +317,7 @@ const CategoryRender = () => {
     console.log('start', start)
     for(let i = start; i < (start + 6 <= totalResults ? start + 6 : totalResults); i++){
         CategoryHTML += 
-        `<div class="category-item" onclick="movieInformation(${i + 1})">
+        `<div class="category-item" onclick="movieInformation(${i}, 2)">
             <img src=${posterMethod(dataList[i].poster_path)}>
             <p>${dataList[i].title}</p>
         </div>`
