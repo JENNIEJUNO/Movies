@@ -297,7 +297,7 @@ img{
 }
 #information_section{
     width:100%;
-    height:33vw;
+    height:70vh;
     overflow-y:auto;
 }
 #information_section img{
@@ -431,9 +431,6 @@ img{
     }
     #information_title button{
         font-size:3vw;
-    }
-    #information_section{
-        height:70vw;
     }
     #information_section img{
         margin:2vw auto;
