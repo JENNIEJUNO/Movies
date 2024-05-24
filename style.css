@@ -240,16 +240,17 @@ img{
     padding:0.8vw;
 }
 #movie_information{
-    display:none;
     position:fixed;
     top:50px;
     left:0;
     right:0;
     margin:auto;
     width:30vw;
-    border-radius:5%;
-    z-index:1;
+    border-radius:2%;
+    z-index:-1;
+    opacity:0;
     background-color:rgb(24, 24, 24, 0.9);
+    overflow:hidden;
 }
 #information_title{
     display:flex;
@@ -284,7 +285,7 @@ img{
 #information_section img{
     display:block;
     margin:1vw auto;
-    width:70%;
+    width:80%;
 }
 #information_section p{
     color:white;
@@ -301,6 +302,14 @@ img{
     color:white;
     text-align:center;
     font-size:1.2vw;
+}
+#block{
+    position:fixed;
+    z-index:-1;
+    width:100vw;
+    height:100vh;
+    opacity:0;
+    background-color:rgb(24, 24, 24, 0.9);
 }
 @media (max-width:1000px){
     #title{
