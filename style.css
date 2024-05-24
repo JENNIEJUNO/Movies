@@ -445,7 +445,7 @@ img{
 }
 @media (max-width:500px){
     #movies{
-        height:330vw;
+        height:335vw;
         overflow:hidden;
     }
     #current-box{
@@ -463,6 +463,10 @@ img{
     }
     #category-box{
         flex:6;
+    }
+    .movie-text{
+        font-size:5vw;
+        padding:3vw;
     }
     #category-list{
         width:100%;
