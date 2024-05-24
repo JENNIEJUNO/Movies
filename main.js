@@ -59,9 +59,18 @@ const starRender = (num) => {
 }
 
 const movieInformation = (num) => {
-    console.log('num', num)
     if(!num){
-        document.querySelector('#movie_information').style.display = 'none'
+        document.querySelector('#block').style.transition = '0.5s'
+        document.querySelector('#block').style.opacity = '0';
+        document.querySelector('#block').style.zIndex = '-1'
+        document.querySelector('#movie_information').style.transition = '0.5s'
+        document.querySelector('#movie_information').style.opacity = '0';
+        document.querySelector('#movie_information').style.zIndex = '-1'
+        setTimeout(()=>{
+            document.querySelector('#block').style.transition = 'none';
+            document.querySelector('#movie_information').style.transition = 'none'
+        },500)
+        document.body.style.overflow = '';
         return;
     }
     else{
@@ -81,8 +90,18 @@ const movieInformation = (num) => {
         </div>
         `
 
+        document.querySelector('#block').style.transition = '0.5s';
+        document.querySelector('#block').style.opacity = '1';
+        document.querySelector('#block').style.zIndex = '2';
+        document.querySelector('#movie_information').style.transition = '0.5s';
+        document.querySelector('#movie_information').style.opacity = '1';
+        document.querySelector('#movie_information').style.zIndex = '3';
         document.querySelector('#movie_information').innerHTML = InformationRender
-        document.querySelector('#movie_information').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        setTimeout(()=>{
+            document.querySelector('#block').style.transition = 'none';
+            document.querySelector('#movie_information').style.transition = 'none';
+        },500)
     }
 }
 
